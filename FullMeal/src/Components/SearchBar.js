@@ -21,14 +21,14 @@ export default function SearchBar(props) {
   return (
     <View style={[styles.container, props.containerStyle]}>
       <View style={styles.iconView}>
-        <Icon name="search1" size={24} color={colors.grey}></Icon>
+        <Icon name="search1" size={24} color={colors.primary}></Icon>
       </View>
       {!disabled ? (
         <TextInput
           autoFocus={true}
           placeholder={'Search'}
           placeholderTextColor={colors.grey}
-          style={{ ...styles.textInput }}
+          style={{ ...styles.textInput, color: colors.primary }}
           {...props}
         />
       ) : (

@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 
-import {CartItem, Header, Input, Wrapper} from '../Components';
+import {CartItem, Header, Input, Wrapper, HorizontalList} from '../Components';
 import {colors, fonts, metrics} from '../utils/Theme';
 import {SafeAreaInsetsContext} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -74,7 +74,7 @@ class Checkout extends Component {
         address: this.state.phoneNumber,
         slotdatetime: new Date().toString(),
         email: this.state.email,
-        appname: 'Get Thrive',
+        appname: 'Full Meal',
         item: JSON.stringify(this.props.route.params.item),
       }),
     });
@@ -127,8 +127,8 @@ this.setState({
         <Header textStyle={{fontWeight:'bold'}} title="Checkout" />
 
         <OrderPlaced
-          // visible={this.state.visible}
-          visible={true}
+          visible={this.state.visible}
+          // visible={true}
           onPress={() => {
             this.setState({visible: false});
             this.props.emptyCart();
@@ -144,34 +144,34 @@ this.setState({
                 flex: 1,
                 // backgroundColor:'red'
               }}>
-              {this.props.cart.items.map((item) => (
-                <CartItem
+                <HorizontalList
+                style={{paddingRight:metrics.smallMargin}}
+                data={this.props.cart.items}
+                renderItem={({item, index}) => (
+                  <CartItem
                   item={item}
                   quantity={item.quantity}
                   onAdd={() => this.props.addItem(item)}
                   onMinus={() => this.props.deleteItem(item)}
                 />
-              ))}
-              {/* <View style={styles.info}>
+                )}
+              />
+               <View style={styles.info}>
                 <Text style={styles.title}>Payment Mode</Text>
                 <Text style={styles.text}>Payment on Delivery</Text>
               </View>
               <View style={styles.info}>
                 <Text style={styles.title}>Total Price</Text>
-                <Text style={[styles.text, {fontWeight:'bold'}]}>
-                  $ {parseInt(this.props.cart.totalPrice) * this.state.quantity}
+                <Text style={[styles.text, {fontWeight:'bold', color: colors.primary, fontSize:20}]}>
+                  ${parseInt(this.props.cart.totalPrice) * this.state.quantity}
                 </Text>
-              </View> */}
+              </View>
               
               <View style={styles.infoContainer}>
-              {/* <Text style={[styles.heading, {fontSize: 24, fontWeight:'bold'}]}>
-                Customer Details
-              </Text> */}
-              <Text style={[styles.text, {margin: metrics.defaultMargin}]}>Fill out your personal details to confirm order</Text>
+              {/* <Text style={[styles.text, {margin: metrics.defaultMargin}]}>Fill out your personal details to confirm order</Text> */}
               <View style={{paddingHorizontal:metrics.defaultMargin}}>
                 <Input
                   required
-
                   handleBlur={ () => this.onBlur('fname') }
                   handleFocus={ () => this.onFocus('fname') }
                   inputStyle={{ 
@@ -337,16 +337,7 @@ this.setState({
                 />
 
               </View>
-              <View style={styles.info}>
-                <Text style={styles.title}>Payment Mode</Text>
-                <Text style={styles.text}>Payment on Delivery</Text>
-              </View>
-              <View style={styles.info}>
-                <Text style={styles.title}>Total Price</Text>
-                <Text style={[styles.text, {fontWeight:'bold'}]}>
-                  $ {parseInt(this.props.cart.totalPrice) * this.state.quantity}
-                </Text>
-              </View>
+             
               <View style={{flexDirection:'row', margin: metrics.defaultMargin, borderRadius:3}}>
                   {this.state.loading ? (
                     <View style={[styles.btn,{backgroundColor:colors.primary}]}>
@@ -354,20 +345,13 @@ this.setState({
                     </View>
                     ) : (
                       <>
-                        <TouchableWithoutFeedback
-                          onPress={() =>
-                            Navigator.navigate('Home')
-                          }>
-                          <View style={[styles.btn,{backgroundColor:'white'}]}>
-                              <Text style={[styles.btnText,{color:colors.primary}]}>Cancel</Text>
-                            </View>
-                          </TouchableWithoutFeedback>
+                        
                           <TouchableWithoutFeedback
                           onPress={() => {
                             this.onButtonPress();
                           }}>
                           <View style={[styles.btn,{backgroundColor:colors.primary}]}>
-                            <Text style={[styles.btnText,{color:'white'}]} >Order</Text>
+                            <Text style={[styles.btnText,{color:'white'}]} >Order Now!</Text>
                           </View>
                           </TouchableWithoutFeedback>
                       </>
@@ -376,31 +360,6 @@ this.setState({
               </View>
               </View>
             </KeyboardAwareScrollView>
-            {/* <SafeAreaInsetsContext.Consumer>
-              {(insets) => (
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    this.onButtonPress();
-                  }}>
-                  <View
-                    style={[
-                      styles.buttonView,
-                      {paddingBottom: insets.bottom ? insets.bottom : 15},
-                    ]}>
-                    {this.state.loading ? (
-                      <BarIndicator color="white" size={24} />
-                    ) : (
-                      <>
-                        <Text style={styles.buttonText}>
-                          Total Price: $ {this.props.cart.totalPrice}
-                        </Text>
-                        <Text style={styles.buttonText}>Place Order</Text>
-                      </>
-                    )}
-                  </View>
-                </TouchableWithoutFeedback>
-              )}
-            </SafeAreaInsetsContext.Consumer> */}
           </>
         ) : (
           <View
@@ -490,16 +449,10 @@ const styles = StyleSheet.create({
   infoContainer:{
     backgroundColor:'white',
     margin: metrics.defaultMargin,
-    borderRadius:10,
-    shadowColor: "#000",
-  shadowOffset: {
-    width: 0,
-    height: 2,
-  },
-  shadowOpacity: 0.25,
-  shadowRadius: 3.84,
-
-  elevation: 5,
+    borderRadius:20,
+    borderWidth:1,
+    borderColor: colors.primary,
+    paddingTop: metrics.defaultMargin
     },
 });
 

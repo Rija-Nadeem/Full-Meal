@@ -16,6 +16,7 @@ export default class FoodCard extends Component {
     const {name, newItem, image, description, price,bgcolor,isFav} = this.props.item;
     return (
       <TouchableOpacity
+      style={{alignItems:'center'}}
         activeOpacity={0.9}
         onPress={() => Navigator.navigate('ProductDetail',{item:this.props.item,category:this.props.category})}>
         <View style={styles.container}>
@@ -29,20 +30,16 @@ export default class FoodCard extends Component {
               <Text style={styles.desc} numberOfLines={1} ellipsizeMode="tail">
                 {description}
               </Text>
-              <Text style={styles.price}>
-                ${price.replace('$', '')}
-              </Text>
-              <View style={styles.iconView}>
-                <Fav style={{top:-4}} isFav={isFav} item={this.props.item}/>
+              <View style={{flexDirection:'row',marginTop:metrics.smallMargin,alignItems:'center', justifyContent:'space-between'}} >
+                <Text style={styles.price}>
+                  ${price.replace('$', '')}
+                </Text>
+                <View style={styles.iconView}>
+                  <Fav isFav={isFav} item={this.props.item}/>
+                </View>
               </View>
 
             </View>
-            {newItem && 
-            <View style={styles.fav}>
-    
-                <Text style={{paddingHorizontal:12, paddingVertical:3, fontSize:12, color:colors.secondary, fontWeight:'bold'}}>NEW</Text>
-              </View>
-            }
         </View>
       </TouchableOpacity>
     );
@@ -51,22 +48,21 @@ export default class FoodCard extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: metrics.width * 0.42,
-    marginRight: metrics.defaultMargin,
+    width: metrics.width * 0.80,
+    marginRight: metrics.smallMargin,
     marginBottom: metrics.defaultMargin,
-    borderRadius:3,
+    borderRadius:18,
     backgroundColor:'white',
-    borderRadius: 3,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 3,
     },
-    shadowOpacity: 0.20,
-    shadowRadius: 1.41,
-    elevation: 2,
-    position:'relative',
-    top:0, left:0,
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    elevation: 7,
+    flexDirection:'row',
+    justifyContent:'center'
   },
   linearGrad:{
     borderRadius:30,
@@ -74,10 +70,11 @@ const styles = StyleSheet.create({
   imageView: {
     width: 100,
     height: 100,
-    alignSelf:'center',
-    // backgroundColor:'white',
-    borderRadius:30,
-    marginVertical:15,
+    // alignSelf:'center',
+    backgroundColor:colors.primaryLight,
+    borderRadius:18,
+    margin:5,
+    // marginVertical:15,
     
   },
   fav:{
@@ -94,7 +91,8 @@ const styles = StyleSheet.create({
   },
   detailView: {
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingTop:5,
+    // paddingBottom: 20,
     // shadowColor: colors.grey,
     // shadowOffset: {
     //   width: 0,
@@ -103,20 +101,22 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.25,
     // shadowRadius: 3.84,
     borderRadius: 15,
+    flex:1,
+    // backgroundColor:'green'
 
 
   },
   iconView: {
-    backgroundColor: 'transparent',
-    borderBottomEndRadius: 15,
-    borderTopStartRadius: 15,
-    width: 45,
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
+    // backgroundColor: 'transparent',
+    // borderBottomEndRadius: 15,
+    // borderTopStartRadius: 15,
+    // width: 45,
+    // height: 45,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // position: 'absolute',
+    // bottom: 0,
+    // right: 0,
 
   },
   title: {
@@ -130,13 +130,14 @@ const styles = StyleSheet.create({
     color: colors.grey,
     marginVertical: 5,
     fontFamily: fonts.secondary,
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
+    // flexShrink: 1
   },
   price: {
-    marginTop: 10,
-    fontSize: 18,
+    // marginTop: 10,
+    fontSize: 20,
     fontFamily: fonts.secondaryBold,
     fontWeight:'bold',
-    color:colors.grey
+    color:colors.primary
   },
 });

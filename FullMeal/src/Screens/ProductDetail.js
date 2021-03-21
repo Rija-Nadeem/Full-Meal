@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import {Image} from 'react-native';
 import {View, Text} from 'react-native';
-import {HorizontalList, Wrapper} from '../Components';
+import {HorizontalList, Wrapper, Fav} from '../Components';
 import {colors, fonts, metrics} from '../utils/Theme';
 import {
   SafeAreaView,
@@ -51,79 +51,69 @@ class ProductDetail extends Component {
       price,
       bgcolor,
       id,
-      type
+      type, isFav
     } = this.props.route.params.item;
 
     const flag = this.props.cart?.items.filter((val) => val.id == id);
     const quantity = flag.length !== 0 ? flag[0].quantity : 0;
 
     return (
-      <Wrapper top={0} bottom={0} style={{backgroundColor: bgcolor}}>
+      <Wrapper bottom={0} style={{backgroundColor: bgcolor}}>
         <ScrollView
           style={{ flex: 1 }}
           bounces={false}
           showsVerticalScrollIndicator={false}>
           <View>
-        <TouchableWithoutFeedback onPress={() => Navigator.goBack()}>
-          <View style={styles.backIcon}>
-            <Icon name="chevron-back" color="black" size={30} />
-          </View>
-        </TouchableWithoutFeedback>
-         <Text style={styles.nameHeading}>{name}</Text>
-         <Text style={styles.prodtype}>Type: {type}</Text>
-        <View style={styles.imageView}>
-          <Image style={styles.image} source={image} />
-        </View>
-        <View style={{paddingHorizontal: metrics.defaultMargin, marginTop:metrics.defaultMargin}}>
+            <View style={{flexDirection:'row',padding: metrics.defaultMargin, justifyContent:'space-between', alignItems:'center'}}>
+              <TouchableWithoutFeedback onPress={() => Navigator.goBack()}>
+                <View style={[styles.backIcon]}>
+                  <Icon name="chevron-back" color="black" size={30} />
+                </View>
+              </TouchableWithoutFeedback>
+              <Icon
+                  name="heart"
+                  style={[styles.icon,{color: isFav? colors.red : colors.primary}]}
+                />
+
+            </View>
+            <View style={{alignItems:'center', marginHorizontal: metrics.defaultMargin,}} >
+              <View style={styles.imageView}>
+                <Image style={styles.image} source={image} />
+              </View>
+            </View>
+        <View style={{marginHorizontal: metrics.defaultMargin, borderRadius:20 , paddingHorizontal: metrics.defaultMargin,  flex:1, borderColor:colors.primaryLight,borderWidth:1, marginTop:metrics.defaultMargin}}>
          
-          <Text style={styles.smallHeading}>Product Description:</Text>
+          <Text style={styles.smallHeading}>{name}</Text>
+          <Text style={[styles.text]}>Price: ${price}</Text>
           <Text style={styles.text}>{description}</Text>
           
-          <Text style={styles.smallHeading}>Colors:</Text>
-          <View style={styles.colorContainer}>
-            {
-              this.state.colors.map(list => (
-                <View style={[styles.colorPatch, { backgroundColor: list.color }]}></View>
-              ))
-            }
-          </View>
+          
           <View style={{
             flexDirection:'row',
             justifyContent:'space-between',
             alignItems:'center'
           }}>
-            <View>
-              <Text style={[styles.smallHeading,{margin:0}]}>
-                Price: ${price}
-              </Text>
-            </View>
-            <View style={styles.quantityView}>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={this.deleteItem}
-                style={styles.iconView}>
-                <Icon name="remove" style={{...styles.icon}} />
-              </TouchableOpacity>
-              <Text style={styles.quantity}>{quantity}</Text>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={this.addItem}
-                style={styles.iconView}>
-                <Icon name="add" style={styles.icon} />
-              </TouchableOpacity>
-            </View>
+            
+            
           </View>
         </View>
             
               <View style={{flexDirection:'row', margin: metrics.defaultMargin, borderRadius:3}}>
-                <TouchableWithoutFeedback
-                onPress={() =>
-                  Navigator.goBack()
-                }>
-                <View style={[styles.btn,{backgroundColor:'white'}]}>
-                    <Text style={[styles.btnText,{color:colors.primary}]}>Go Back</Text>
-                  </View>
-                </TouchableWithoutFeedback>
+                <View style={[styles.quantityView,{flex:1, justifyContent:'center', alignItems:'center', marginTop:metrics.defaultMargin,}]}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={this.deleteItem}
+                  style={styles.iconView}>
+                  <Icon name="remove" style={{...styles.icon}} />
+                </TouchableOpacity>
+                <Text style={styles.quantity}>{quantity}</Text>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={this.addItem}
+                  style={styles.iconView}>
+                  <Icon name="add" style={styles.icon} />
+                </TouchableOpacity>
+              </View>
                 <TouchableWithoutFeedback
                 onPress={() =>
                   Navigator.navigate('Checkout', {
@@ -144,11 +134,7 @@ class ProductDetail extends Component {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
-  },
+ 
   heading: {
     fontFamily: fonts.secondaryBold,
     fontSize: 28,
@@ -186,10 +172,18 @@ const styles = StyleSheet.create({
     color: colors.grey,
   },
   imageView: {
-    marginTop: metrics.largeMargin,
-    width: metrics.width,
-    height: 300,
+    // marginTop: metrics.largeMargin,
+    width: '100%' ,
+    height: 400,
+    padding:metrics.defaultMargin,
+    backgroundColor:colors.primaryLight,
+    borderRadius:20,
     // justifyContent: 'flex-end',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   buttonView: {
     backgroundColor: colors.secondary,
@@ -212,8 +206,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     // width: 50,
     // height: 50,
-    padding: metrics.defaultMargin,
-    borderRadius: 10,
+    // padding: metrics.defaultMargin,
+    // borderRadius: 10,
     // alignItems: 'center',
     // justifyContent: 'center',
   },

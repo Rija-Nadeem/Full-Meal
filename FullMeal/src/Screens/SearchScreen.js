@@ -8,14 +8,14 @@ import CardComponent from '../Components/FoodCard';
 import {colors, fonts, metrics, text} from '../utils/Theme';
 import {connect} from 'react-redux';
 import data from '../../data';
-import {ItemCard} from '../Components';
+import {ItemCard, FoodCard} from '../Components';
 
 function SearchScreen(props) {
   const [list, setlist] = useState(data.items);
   const [searchQueryText, setsearchQueryText] = useState('');
 
   useEffect(() => {
-    var updated_list = data.items.filter((val) =>
+    var updated_list = props.products.filter((val) =>
       val.name.toLowerCase().includes(searchQueryText.toLowerCase()),
     );
     setlist(updated_list);
@@ -28,21 +28,19 @@ function SearchScreen(props) {
       <View style={{margin: metrics.defaultMargin}}>
         <Text>
           <Text style={{fontFamily: fonts.primary, }}>Found </Text>
-          <Text style={{fontWeight:'bold'}}>{list.length} Results</Text>
+          <Text style={{fontWeight:'bold', color: colors.primary}}>{list.length} Results</Text>
         </Text>
       </View>
       <FlatList
         showsVerticalScrollIndicator={false}
         horizontal={false}
-        numColumns={2}
-        bounces={false}
         data={list}
         style={{padding: metrics.defaultMargin}}
         keyExtractor={() => Math.random().toString()}
         renderItem={({item}) => (
-          <ItemCard
+          <FoodCard
             item={item}
-            style={{marginBottom: metrics.defaultMargin, width: '100%'}}
+            // style={{marginBottom: metrics.defaultMargin, width: '100%'}}
           />
         )}
       />

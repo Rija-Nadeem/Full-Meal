@@ -43,7 +43,7 @@ class Home extends Component {
     const items = this.props.products.filter(
       (val) => val.categoryid == item.id,
     );
-    this.setState({ items: items });
+    this.setState({ items: items },()=>Navigator.navigate('Products',{category:this.state.selectedCategory }));
   };
 
   UNSAFE_componentWillReceiveProps(props) {
@@ -66,7 +66,7 @@ class Home extends Component {
           showsVerticalScrollIndicator={false}>
           <View style={styles.headingContainer}>
             <Text style={styles.heading}>
-             Headset
+             What do you want{'\n'}to eat today?
             </Text>
             <Icon
               onPress={() => Navigator.navigate('Checkout')}
@@ -82,46 +82,71 @@ class Home extends Component {
               data={data.category}
               renderItem={({ item,index }) => (
                 <Category
+                  data={this.state.items}
+                  itemsNum={this.state.items.length}
                   item={item}
                   index={index}
                   selected={item.id == this.state.selectedCategory}
-                  onPress={() => this.selectCategory(item)}
+                  onPress={() => {
+                    this.selectCategory(item)
+                    
+                  }}
                 />
               )}
             />
           </View>
 
-          <HorizontalList
-           style={{paddingTop:5}}
-            horizontal={false}
-            numColumns={2}
-            data={this.state.items}
-            renderItem={({ item }) => (
-              <FoodCard item={item} />
-            )}
-          />
-
-
-          <Text style={styles.subHeading}>Recommended</Text>
-          <HorizontalList
-          //  style={{paddingTop:5}}
-           horizontal={false}
-           numColumns={2}
-            data={this.state.recommended}
-            renderItem={({ item }) => <ItemCard item={item} />}
-          />
-          {this.props.favProducts.length > 0 && (
-            <>
+          <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginHorizontal:metrics.defaultMargin, marginBottom: metrics.defaultMargin}} >
+            <View style={{flexDirection:'row', alignItems:'center'}} >
+              <View style={{backgroundColor:colors.red, padding:10, borderRadius:15, marginRight:metrics.smallMargin}}>
+                <Icon
+                  name="heart"
+                  style={[styles.icon, {color:'white'}]}
+                />
+              </View>
+              <Text style={styles.subHeading}>Popular</Text>
+            </View>
+              <Icon
+              onPress={() => Navigator.navigate('Products',{category:null })}
+              name="arrow-right"
+              style={styles.icon}
+            />
+          </View>
+            <HorizontalList
+            style={{paddingTop:5}}
+              horizontal={false}
+              // numColumns={2}
+              data={this.state.recommended}
+              // data={this.state.items}
+              renderItem={({ item }) => (
+                <FoodCard item={item} />
+              )}
+            />
+ {this.props.favProducts.length > 0 && (
+   <>
+        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginHorizontal:metrics.defaultMargin, marginBottom: metrics.defaultMargin}} >
+            <View style={{flexDirection:'row', alignItems:'center'}} >
+              <View style={{backgroundColor:colors.red, padding:10, borderRadius:15, marginRight:metrics.smallMargin}}>
+                <Icon
+                  name="heart"
+                  style={[styles.icon, {color:'white'}]}
+                />
+              </View>
               <Text style={styles.subHeading}>Favourites</Text>
-              <HorizontalList
-              //  style={{paddingTop:5}}
-               horizontal={false}
-               numColumns={2}
-                data={this.props.favProducts}
-                renderItem={({ item }) => <ItemCard item={item} />}
-              />
+            </View>
+          </View>
+            <HorizontalList
+            style={{paddingTop:5}}
+              horizontal={false}
+              // numColumns={2}
+              data={this.props.favProducts}
+              renderItem={({ item }) => (
+                <FoodCard item={item} />
+              )}
+            />
             </>
-          )}
+ )}
+
         </ScrollView>
       </Wrapper>
     );
@@ -151,7 +176,7 @@ const styles = StyleSheet.create({
   subHeading: {
     fontFamily: fonts.primaryBold,
     fontSize: 24,
-    margin: metrics.defaultMargin,
+    // margin: metrics.defaultMargin,
     fontWeight:'bold'
 
   },
@@ -182,7 +207,7 @@ const styles = StyleSheet.create({
     // right: metrics.defaultMargin,
     // top: metrics.defaultMargin,
     fontSize: 32,
-    color: colors.grey,
+    color: colors.primary,
   },
 });
 

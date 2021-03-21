@@ -15,15 +15,15 @@ export default class OrderPlaced extends Component {
         <View style={styles.modalView}>
           <View style={styles.centeredView}>
             <View style={styles.iconView}>
-              <Icon name="check" color={colors.primary} size={54} />
+              <Icon name="check" color={'white'} size={54} />
             </View>
             <Text style={[styles.title,{fontWeight:'bold'}]}>
-              Your order has been placed successfully!
+              Order Received Successfully!
             </Text>
             <Text style={{
               textAlign:'center',
               marginBottom:metrics.defaultMargin
-            }}>We will reach out to you shortly with your order.</Text>
+            }}>You will soon receive your order on your doorsteps.</Text>
             <View style={{borderRadius: 3, overflow: 'hidden',marginVertical:10}}>
               <Text onPress={this.props.onPress} style={styles.button}>Ok</Text>
             </View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   iconView: {
-    backgroundColor: 'transparent',
+    backgroundColor: colors.primaryLight,
     width: 100,
     height: 100,
     alignItems: 'center',
